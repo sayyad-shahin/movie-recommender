@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Movie Recommender</title>
+  <meta name="description" content="Find movies similar to your favourites, or rate a few films and get personal recommendations.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>🎬 Movie Recommender</h1>
+      <p class="sub">{{ stats.movies }} movies &middot; {{ "{:,}".format(stats.ratings) }} ratings from {{ stats.users }} viewers</p>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="similar" role="tab">Find similar movies</button>
+      <button class="tab" data-tab="mine" role="tab">Recommend for me</button>
+      <button class="tab" data-tab="top" role="tab">Top rated</button>
+    </nav>
+
+    <div class="mix card">
+      <label for="audience"><b>How should matches be found?</b></label>
+      <div class="slider"><span>Story, genre, director</span>
+        <input type="range" id="audience" min="0" max="100" value="50" aria-label="Balance between content and audience taste">
+        <span>What other viewers liked</span></div>
+    </div>
+
+    <section id="tab-similar" class="panel">
+      <div class="card">
+        <label for="q1" class="lbl">Pick a movie you like</label>
+        <div class="search"><input id="q1" type="search" placeholder="Start typing, e.g. Inception" autocomplete="off"><div id="sug1" class="sug hidden"></div></div>
+        <p id="picked" class="muted"></p>
+      </div>
+      <div id="out-similar" class="results"></div>
+    </section>
+
+    <section id="tab-mine" class="panel hidden">
+      <div class="card">
+        <label for="q2" class="lbl">Add movies you have seen and rate them</label>
+        <div class="search"><input id="q2" type="search" placeholder="Search a movie to add..." autocomplete="off"><div id="sug2" class="sug hidden"></div></div>
+        <ul id="mylist" class="mylist"></ul>
+        <div class="row">
+          <button id="sampleBtn" class="ghost" type="button">Try a sample viewer</button>
+          <button id="recBtn" class="primary" type="button">Get recommendations</button>
+        </div>
+      </div>
+      <div id="out-mine" class="results"></div>
+    </section>
+
+    <section id="tab-top" class="panel hidden">
+      <div class="card"><label for="genre" class="lbl">Genre</label>
+        <select id="genre"><option value="">All genres</option></select></div>
+      <div id="out-top" class="results"></div>
+    </section>
+
+    <p id="error" class="error hidden" role="alert"></p>
+    <footer class="muted">Sample ratings are synthetic. Recommendations are suggestions, so enjoy the surprises.</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
